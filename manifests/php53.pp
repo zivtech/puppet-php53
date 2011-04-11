@@ -63,17 +63,14 @@ class php53 {
     source => "puppet:///php53/php.ini.cli"
   }
 
+  file { "/etc/memcached.conf":
+    source => "puppet:///php53/memcached.conf"
+  }
+
   file { "/var/www":
     ensure => 'directory',
     owner => 'webadmin',
     group => 'webadmin',
-  }
-
-  # Ensure that /var/www is owned by webadmin (though other items may be in the www-data group
-  file { "/var/www":
-    ensure => 'directory',
-    owner => 'webadmin',
-    recurse => true,
   }
 
   # enable mod_rewrite
