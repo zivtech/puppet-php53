@@ -56,15 +56,23 @@ class php53 {
   }
 
   file { "/etc/php5/apache2/php.ini":
-    source => "puppet:///php53/php.ini.apache2"
+    require => Package['php5'],
+    source => "puppet:///php53/php.ini.apache2",
+    owner => root,
+    group => root,
   }
 
   file { "/etc/php5/cli/php.ini":
-    source => "puppet:///php53/php.ini.cli"
+    require => Package['php5'],
+    source => "puppet:///php53/php.ini.cli",
+    owner => root,
+    group => root,
   }
 
   file { "/etc/memcached.conf":
-    source => "puppet:///php53/memcached.conf"
+    source => "puppet:///php53/memcached.conf",
+    owner => root,
+    group => root,
   }
 
   file { "/var/www":
