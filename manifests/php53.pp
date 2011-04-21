@@ -19,6 +19,7 @@ class php53 {
       'php5-mcrypt',
       'php5-memcache',
       'php5-mysql',
+      'php5-curl',
       'sendmail',
     ]: 
       ensure => installed 
@@ -30,6 +31,23 @@ class php53 {
     ]:
     ensure => running,
   }
+
+  exec { 'pecl install uploadprogress':
+    require => Package['php-pear'],
+    unless => "/usr/bin/test -f /etc/php5/apache2/conf.d/uploadprogress.ini",
+    path => ["/usr/bin", "/usr/sbin"],
+  }
+
+  file { '/etc/apache2/envvars':
+    require => Package['apache2-mpm-prefork'],
+    source => "puppet:///php53/envvars",
+  }
+
+  file { '/etc/php5/apache2/conf.d/uploadprogress.ini':
+    ensure => present,
+    content => 'extension=uploadprogress.so',
+    require => Exec['pecl install uploadprogress'],
+  } 
 
   file { '/var/log/php':
     type => 'directory',
@@ -45,6 +63,7 @@ class php53 {
       '/etc/apache2/sites-enabled',
     ]:
     type => 'directory',
+    require => Package['apache2-mpm-prefork'],
     ensure => 'directory',
     owner => 'webadmin',
     recurse => true,
@@ -53,6 +72,7 @@ class php53 {
   file { '/var/log/php/error.log':
     ensure => exists,
     owner  => 'www-data',
+    group => 'webadmin',
   }
 
   file { "/etc/php5/apache2/php.ini":
