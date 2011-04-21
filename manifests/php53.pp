@@ -38,16 +38,21 @@ class php53 {
     path => ["/usr/bin", "/usr/sbin"],
   }
 
-  file { '/etc/apache2/envvars':
-    require => Package['apache2-mpm-prefork'],
-    source => "puppet:///php53/envvars",
-  }
-
   file { '/etc/php5/apache2/conf.d/uploadprogress.ini':
     ensure => present,
     content => 'extension=uploadprogress.so',
     require => Exec['pecl install uploadprogress'],
   } 
+
+  file { '/etc/php5/cli/conf.d/uploadprogress.ini':
+    ensure => present,
+    content => 'extension=uploadprogress.so',
+    require => Exec['pecl install uploadprogress'],
+  } 
+  file { '/etc/apache2/envvars':
+    require => Package['apache2-mpm-prefork'],
+    source => "puppet:///php53/envvars",
+  }
 
   file { '/var/log/php':
     type => 'directory',
@@ -105,6 +110,20 @@ class php53 {
   exec { "/usr/sbin/a2enmod rewrite":
     path => "/usr/bin:/usr/sbin:/bin",
     unless => "/usr/bin/test -f /etc/apache2/mods-enabled/rewrite.load"
+  }
+
+  # unfotunately ubuntu packages use deprecated comments
+  exec { 'clean deprecated comments in /etc/php5/cli':
+    command => "find /etc/php5/cli/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
+    path => "/usr/bin:/usr/sbin:/bin",
+    onlyif => "grep -qr '#' /etc/php5/cli/conf.d"
+  }
+
+  # unfotunately ubuntu packages use deprecated comments
+  exec { 'clean deprecated comments in /etc/php5/apache2': 
+    command => "find /etc/php5/apache2/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
+    path => "/usr/bin:/usr/sbin:/bin",
+    onlyif => "grep -qr '#' /etc/php5/apache2/conf.d"
   }
 
 }
