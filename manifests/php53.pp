@@ -1,4 +1,4 @@
-class php53 {
+class php53 inherits zivtechbase {
   package { 
     [
       'apache2-mpm-prefork',
