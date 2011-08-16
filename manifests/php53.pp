@@ -44,11 +44,6 @@ class php53 inherits zivtechbase {
     require => Exec['pecl install uploadprogress'],
   } 
 
-  file { '/etc/php5/cli/conf.d/uploadprogress.ini':
-    ensure => present,
-    content => 'extension=uploadprogress.so',
-    require => Exec['pecl install uploadprogress'],
-  } 
   file { '/etc/apache2/envvars':
     require => Package['apache2-mpm-prefork'],
     source => "puppet:///php53/envvars",
@@ -117,6 +112,13 @@ class php53 inherits zivtechbase {
     command => "find /etc/php5/cli/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/cli/conf.d"
+  }
+
+  # unfotunately ubuntu packages use deprecated comments
+  exec { 'clean deprecated comments in /etc/php5/conf.d':
+    command => "find /etc/php5/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
+    path => "/usr/bin:/usr/sbin:/bin",
+    onlyif => "grep -qr '#' /etc/php5/conf.d"
   }
 
   # unfotunately ubuntu packages use deprecated comments
