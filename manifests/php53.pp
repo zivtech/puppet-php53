@@ -50,7 +50,6 @@ class php53 inherits zivtechbase {
   }
 
   file { '/var/log/php':
-    type => 'directory',
     ensure => 'directory',
     owner => 'www-data',
     group => 'webadmin',
@@ -69,7 +68,6 @@ class php53 inherits zivtechbase {
       '/etc/apache2/sites-available',
       '/etc/apache2/sites-enabled',
     ]:
-    type => 'directory',
     require => Package['apache2-mpm-prefork'],
     ensure => 'directory',
     owner => 'webadmin',
