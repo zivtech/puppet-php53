@@ -57,6 +57,13 @@ class php53 inherits zivtechbase {
     recurse => true,
   }
 
+  file { '/var/log/php/error.log':
+    require => File['/var/log/php'],
+    ensure => exists,
+    owner  => 'www-data',
+    group => 'webadmin',
+  }
+
   file { 
     [
       '/etc/apache2/sites-available',
@@ -67,12 +74,6 @@ class php53 inherits zivtechbase {
     ensure => 'directory',
     owner => 'webadmin',
     recurse => true,
-  }
-
-  file { '/var/log/php/error.log':
-    ensure => exists,
-    owner  => 'www-data',
-    group => 'webadmin',
   }
 
   file { "/etc/php5/apache2/php.ini":
