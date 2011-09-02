@@ -1,5 +1,5 @@
 class php53 inherits zivtechbase {
-  package { 
+  package {
     [
       'apache2-mpm-prefork',
       'apache2-prefork-dev',
@@ -21,10 +21,10 @@ class php53 inherits zivtechbase {
       'php5-mysql',
       'php5-curl',
       'sendmail',
-    ]: 
-      ensure => installed 
+    ]:
+      ensure => installed
   }
-  service { 
+  service {
     [
       'apache2',
       'memcached',
@@ -32,7 +32,7 @@ class php53 inherits zivtechbase {
     ensure => running,
     require => Package['apache2.2-common','memcached'],
   }
-
+/*
   exec { 'pecl install uploadprogress':
     require => Package['php-pear'],
     unless => "/usr/bin/test -f /etc/php5/apache2/conf.d/uploadprogress.ini",
@@ -43,7 +43,8 @@ class php53 inherits zivtechbase {
     ensure => present,
     content => 'extension=uploadprogress.so',
     require => Exec['pecl install uploadprogress'],
-  } 
+  }
+*/
 
   file { '/etc/apache2/envvars':
     require => Package['apache2-mpm-prefork'],
@@ -64,7 +65,7 @@ class php53 inherits zivtechbase {
     group => 'webadmin',
   }
 
-  file { 
+  file {
     [
       '/etc/apache2/sites-available',
       '/etc/apache2/sites-enabled',
@@ -122,7 +123,7 @@ class php53 inherits zivtechbase {
   }
 
   # unfotunately ubuntu packages use deprecated comments
-  exec { 'clean deprecated comments in /etc/php5/apache2': 
+  exec { 'clean deprecated comments in /etc/php5/apache2':
     command => "find /etc/php5/apache2/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/apache2/conf.d"
