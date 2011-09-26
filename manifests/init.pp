@@ -109,6 +109,7 @@ class php53 inherits zivtechbase {
   }
 
   # unfotunately ubuntu packages use deprecated comments
+  /*
   exec { 'clean deprecated comments in /etc/php5/cli':
     command => "find /etc/php5/cli/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
     path => "/usr/bin:/usr/sbin:/bin",
@@ -128,5 +129,5 @@ class php53 inherits zivtechbase {
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/apache2/conf.d"
   }
-
+*/
 }
