@@ -47,7 +47,12 @@ class php53 inherits zivtechbase {
 */
 
   file { '/etc/apache2/envvars':
-    require => Package['apache2-mpm-prefork'],
+    require => Package[[
+      'apache2-mpm-prefork',
+      'apache2-prefork-dev',
+      'apache2-utils',
+      'apache2.2-common',
+    ]],
     source => "puppet:///modules/php53/envvars",
   }
 
