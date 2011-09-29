@@ -48,7 +48,7 @@ class php53 inherits zivtechbase {
 
   file { '/etc/apache2/envvars':
     require => Package['apache2-mpm-prefork'],
-    source => "puppet:///php53/envvars",
+    source => "puppet:///modules/php53/envvars",
   }
 
   file { '/var/log/php':
@@ -78,20 +78,20 @@ class php53 inherits zivtechbase {
 
   file { "/etc/php5/apache2/php.ini":
     require => Package['php5'],
-    source => "puppet:///php53/php.ini.apache2",
+    source => "puppet:///modules/php53/php.ini.apache2",
     owner => root,
     group => root,
   }
 
   file { "/etc/php5/cli/php.ini":
     require => Package['php5'],
-    source => "puppet:///php53/php.ini.cli",
+    source => "puppet:///modules/php53/php.ini.cli",
     owner => root,
     group => root,
   }
 
   file { "/etc/memcached.conf":
-    source => "puppet:///php53/memcached.conf",
+    source => "puppet:///modules/php53/memcached.conf",
     owner => root,
     group => root,
   }
