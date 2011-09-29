@@ -56,6 +56,7 @@ class php53 inherits zivtechbase {
     owner => 'www-data',
     group => 'webadmin',
     recurse => true,
+    require => User['webadmin'],
   }
 
   file { '/var/log/php/error.log':
