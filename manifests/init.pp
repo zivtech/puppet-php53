@@ -111,29 +111,28 @@ class php53 inherits zivtechbase {
   # enable mod_rewrite
   exec { "/usr/sbin/a2enmod rewrite":
     path => "/usr/bin:/usr/sbin:/bin",
-    unless => "/usr/bin/test -f /etc/apache2/mods-enabled/rewrite.load"
+    unless => "/usr/bin/test -f /etc/apache2/mods-enabled/rewrite.load",
+    require => Package['apache2-utils'],
   }
 
   # unfotunately ubuntu packages use deprecated comments
-  /*
   exec { 'clean deprecated comments in /etc/php5/cli':
-    command => "find /etc/php5/cli/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
+    command => "find /etc/php5/cli/conf.d/* -type f -exec sed -i 's/#/;/g' {} \\;",
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/cli/conf.d"
   }
 
   # unfotunately ubuntu packages use deprecated comments
   exec { 'clean deprecated comments in /etc/php5/conf.d':
-    command => "find /etc/php5/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
+    command => "find /etc/php5/conf.d/* -type f -exec sed -i 's/#/;/g' {} \\;",
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/conf.d"
   }
 
   # unfotunately ubuntu packages use deprecated comments
   exec { 'clean deprecated comments in /etc/php5/apache2':
-    command => "find /etc/php5/apache2/conf.d/* -type f -exec sed -i 's/#/;/g' {} \;",
+    command => "find /etc/php5/apache2/conf.d/* -type f -exec sed -i 's/#/;/g' {} \\;",
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/apache2/conf.d"
   }
-*/
 }
