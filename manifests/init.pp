@@ -1,27 +1,27 @@
 class php53 inherits zivtechbase {
-  package {
-    [
-      'apache2-mpm-prefork',
-      'apache2-prefork-dev',
-      'apache2-utils',
-      'apache2.2-common',
-      'ssl-cert',
-      'memcached',
-      'mime-support',
-      'php5',
-      'php5-cli',
-      'php-apc',
-      'php-pear',
-      'php5-common',
-      'php5-dev',
-      'php5-gd',
-      'php5-imap',
-      'php5-mcrypt',
-      'php5-memcache',
-      'php5-mysql',
-      'php5-curl',
-      'sendmail',
-    ]:
+  package { 'php53':
+      name => [
+        'apache2-mpm-prefork',
+        'apache2-prefork-dev',
+        'apache2-utils',
+        'apache2.2-common',
+        'ssl-cert',
+        'memcached',
+        'mime-support',
+        'php5',
+        'php5-cli',
+        'php-apc',
+        'php-pear',
+        'php5-common',
+        'php5-dev',
+        'php5-gd',
+        'php5-imap',
+        'php5-mcrypt',
+        'php5-memcache',
+        'php5-mysql',
+        'php5-curl',
+        'sendmail',
+      ],
       ensure => installed
   }
   service {
@@ -30,11 +30,11 @@ class php53 inherits zivtechbase {
       'memcached',
     ]:
     ensure => running,
-    require => Package['apache2.2-common','memcached'],
+    require => Package['php53'],
   }
 /*
   exec { 'pecl install uploadprogress':
-    require => Package['php-pear'],
+    require => Package['php53'],
     unless => "/usr/bin/test -f /etc/php5/apache2/conf.d/uploadprogress.ini",
     path => ["/usr/bin", "/usr/sbin"],
   }
@@ -47,12 +47,7 @@ class php53 inherits zivtechbase {
 */
 
   file { '/etc/apache2/envvars':
-    require => Package[[
-      'apache2-mpm-prefork',
-      'apache2-prefork-dev',
-      'apache2-utils',
-      'apache2.2-common',
-    ]],
+    require => Package['php53'],
     source => "puppet:///modules/php53/envvars",
   }
 
@@ -76,21 +71,21 @@ class php53 inherits zivtechbase {
       '/etc/apache2/sites-available',
       '/etc/apache2/sites-enabled',
     ]:
-    require => Package['apache2-mpm-prefork'],
+    require => Package['php53'],
     ensure => 'directory',
     owner => 'webadmin',
     recurse => true,
   }
 
   file { "/etc/php5/apache2/php.ini":
-    require => Package['php5'],
+    require => Package['php53'],
     source => "puppet:///modules/php53/php.ini.apache2",
     owner => root,
     group => root,
   }
 
   file { "/etc/php5/cli/php.ini":
-    require => Package['php5'],
+    require => Package['php53'],
     source => "puppet:///modules/php53/php.ini.cli",
     owner => root,
     group => root,
@@ -112,7 +107,7 @@ class php53 inherits zivtechbase {
   exec { "/usr/sbin/a2enmod rewrite":
     path => "/usr/bin:/usr/sbin:/bin",
     unless => "/usr/bin/test -f /etc/apache2/mods-enabled/rewrite.load",
-    require => Package['apache2-utils'],
+    require => Package['php53'],
   }
 
   # unfotunately ubuntu packages use deprecated comments
