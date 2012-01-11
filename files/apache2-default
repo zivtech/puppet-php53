@@ -1,5 +1,6 @@
 <VirtualHost *:80>
 	ServerAdmin dev@zivtech.com
+	ServerName 127.0.0.1
 	DocumentRoot /var/www/default/
 	<Directory />
 		Options FollowSymLinks
