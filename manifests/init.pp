@@ -103,6 +103,13 @@ class php53 inherits zivtechbase {
     group => 'webadmin',
   }
 
+  file { "/etc/php5/conf.d/apc.ini":
+    require => Package['php53'],
+    source => "puppet:///modules/php53/apc.ini",
+    owner => root,
+    group => root,
+  }
+
   # enable mod_rewrite
   exec { "/usr/sbin/a2enmod rewrite":
     path => "/usr/bin:/usr/sbin:/bin",
