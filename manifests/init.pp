@@ -84,6 +84,20 @@ class php53 inherits zivtechbase {
     group => root,
   }
 
+  file { "/etc/php5/conf.d/memcache.ini":
+    require => Package['php53'],
+    source => "puppet:///modules/php53/memcache.ini",
+    owner => root,
+    group => root,
+  }
+
+  file { "/etc/php5/conf.d/apc.ini":
+    require => Package['php53'],
+    source => "puppet:///modules/php53/apc.ini",
+    owner => root,
+    group => root,
+  }
+
   file { "/etc/php5/cli/php.ini":
     require => Package['php53'],
     source => "puppet:///modules/php53/php.ini.cli",
