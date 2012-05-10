@@ -1,4 +1,4 @@
-class php53 inherits zivtechbase {
+class php53 {
   package { 'php53':
     name => [
       'apache2-mpm-prefork',
@@ -51,6 +51,7 @@ class php53 inherits zivtechbase {
     source => "puppet:///modules/php53/envvars",
   }
 
+  /*
   file { '/var/log/php':
     ensure => 'directory',
     owner => 'www-data',
@@ -76,6 +77,7 @@ class php53 inherits zivtechbase {
     owner => 'webadmin',
     recurse => true,
   }
+  */
 
   file { "/etc/php5/apache2/php.ini":
     require => Package['php53'],
@@ -111,11 +113,13 @@ class php53 inherits zivtechbase {
     group => root,
   }
 
+  /*
   file { "/var/www":
     ensure => 'directory',
     owner => 'webadmin',
     group => 'webadmin',
   }
+  */
 
   file { "/etc/php5/conf.d/apc.ini":
     require => Package['php53'],
