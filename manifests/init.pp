@@ -1,4 +1,4 @@
-class php53 {
+class php53( $webadminuser = 'root', $webadmingroup = 'root') {
   package { 'php53':
     name => [
       'apache2-mpm-prefork',
@@ -24,6 +24,7 @@ class php53 {
     ],
       ensure => installed
   }
+
   service {
     [
       'apache2',
@@ -46,25 +47,18 @@ class php53 {
   }
 */
 
-  file { '/etc/apache2/envvars':
-    require => Package['php53'],
-    source => "puppet:///modules/php53/envvars",
-  }
-
-  /*
   file { '/var/log/php':
     ensure => 'directory',
     owner => 'www-data',
-    group => 'webadmin',
+    group => $webadmingroup,
     recurse => true,
-    require => User['webadmin'],
   }
 
   file { '/var/log/php/error.log':
     require => File['/var/log/php'],
     ensure => exists,
     owner  => 'www-data',
-    group => 'webadmin',
+    group => $webadminuser,
   }
 
   file {
@@ -74,10 +68,16 @@ class php53 {
     ]:
     require => Package['php53'],
     ensure => 'directory',
-    owner => 'webadmin',
+    owner => $webadminuser,
     recurse => true,
   }
-  */
+
+  # TODO: THis is out of date.
+  file { '/etc/apache2/envvars':
+    require => Package['php53'],
+    source => "puppet:///modules/php53/envvars",
+  }
+
 
   file { "/etc/php5/apache2/php.ini":
     require => Package['php53'],
@@ -89,13 +89,6 @@ class php53 {
   file { "/etc/php5/conf.d/memcache.ini":
     require => Package['php53'],
     source => "puppet:///modules/php53/memcache.ini",
-    owner => root,
-    group => root,
-  }
-
-  file { "/etc/php5/conf.d/apc.ini":
-    require => Package['php53'],
-    source => "puppet:///modules/php53/apc.ini",
     owner => root,
     group => root,
   }
@@ -113,19 +106,22 @@ class php53 {
     group => root,
   }
 
-  /*
   file { "/var/www":
     ensure => 'directory',
-    owner => 'webadmin',
-    group => 'webadmin',
+    owner => $webadminuser,
+    group => $webadmingroup,
   }
-  */
 
-  file { "/etc/php5/conf.d/apc.ini":
+  file { "/etc/php5/apache2/conf.d/apc.ini":
     require => Package['php53'],
     source => "puppet:///modules/php53/apc.ini",
     owner => root,
     group => root,
+  }
+
+  file { ["/etc/php5/cli/conf.d/apc.ini", "/etc/php5/conf.d/apc.ini"]:
+    require => Package['php53'],
+    ensure => absent,
   }
 
   # enable mod_rewrite
