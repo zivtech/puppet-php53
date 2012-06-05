@@ -1,3 +1,4 @@
+# Installs PHP 5.3 packages
 class php53( $webadminuser = 'root', $webadmingroup = 'root') {
   package { 'php53':
     name => [
@@ -5,9 +6,28 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root') {
       'apache2-prefork-dev',
       'apache2-utils',
       'apache2.2-common',
-      'ssl-cert',
+      'autoconf',
+      'automake',
+      'autotools-dev',
+      'comerr-dev',
+      'libaprutil1-dev', 
+      'libtool',
+      'libc-client2007e',
+      'libldap2-dev',
+      'libexpat1-dev',
+      'libpcre3-dev',
+      'libapr1-dev',
+      'libsqlite3-dev',
+      'libpq5',
+      'libkrb5-dev',
+      'libpq-dev',
+      'libpcrecpp0',
+      'libmysqlclient-dev',
+      'krb5-multidev',
+      'm4',
       'memcached',
       'mime-support',
+      'mlock',
       'php5',
       'php5-cli',
       'php-apc',
@@ -20,7 +40,9 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root') {
       'php5-memcache',
       'php5-mysql',
       'php5-curl',
-      'sendmail',
+      'shtool',
+      'ssl-cert',
+      'uuid-dev',
     ],
       ensure => installed
   }
@@ -119,6 +141,7 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root') {
     group => root,
   }
 
+  # TODO: This doesn't work because conf.d is a soft link in the apache2 and cli folders
   file { ["/etc/php5/cli/conf.d/apc.ini", "/etc/php5/conf.d/apc.ini"]:
     require => Package['php53'],
     ensure => absent,
