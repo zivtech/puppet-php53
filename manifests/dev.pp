@@ -1,9 +1,5 @@
-class php53::dev($webadminuser = "root", $webadmingroup = "root") {
-
-  class { "php53":
-  	webadminuser => $webadminuser,
-  	webadmingroup => $webadmingroup,
-  }
+# Dev class for PHP 5.3 submodule
+class php53::dev inherits php53 {
 
   package {
     [
@@ -18,24 +14,24 @@ class php53::dev($webadminuser = "root", $webadmingroup = "root") {
     ensure => present,
     source => "puppet:///modules/php53/config.inc.php",
     mode => 644,
-    owner => $webadminuser,
-    group => $webadmingroup,
+    owner => $php53::webadminuser,
+    group => $php53::webadmingroup,
   }
 
   file { "/etc/apache2/sites-available/phpmyadmin":
     require => Package["phpmyadmin"],
     ensure => link,
     target => "/etc/phpmyadmin/apache.conf",
-    owner => $webadminuser,
-    group => $webadmingroup,
+    owner => $php53::webadminuser,
+    group => $php53::webadmingroup,
   }
 
   file { "/etc/apache2/sites-enabled/phpmyadmin":
     require => File["/etc/apache2/sites-available/phpmyadmin"],
     ensure => link,
     target => "/etc/apache2/sites-available/phpmyadmin",
-    owner => $webadminuser,
-    group => $webadmingroup,
+    owner => $php53::webadminuser,
+    group => $php53::webadmingroup,
     notify => Service['apache2'],
   }
 
@@ -43,18 +39,16 @@ class php53::dev($webadminuser = "root", $webadmingroup = "root") {
     require => Package['php53'],
     ensure => present,
     source => "puppet:///modules/php53/apc.php",
-    owner => $webadminuser,
-    group => $webadmingroup,
+    owner => $php53::webadminuser,
+    group => $php53::webadmingroup,
   }
 
   file { "/var/www/memcache.php":
     require => Package['php53'],
     ensure => present,
     source => "puppet:///modules/php53/memcache.php",
-    owner => $webadminuser,
-    group => $webadmingroup,
+    owner => $php53::webadminuser,
+    group => $php53::webadmingroup,
   }
 
 }
-
-
