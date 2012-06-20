@@ -51,4 +51,7 @@ class php53::dev inherits php53 {
     group => $php53::webadmingroup,
   }
 
+  File["/etc/php5/apache2/php.ini"] {
+    source => "puppet:///modules/php53/dev.apache2.php.ini"
+  }
 }
