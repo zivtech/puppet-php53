@@ -32,11 +32,11 @@ class php53::dev ($webadminuser = $php53::webadminuser, $webadmingroup = $php53:
     target => "/etc/apache2/sites-available/phpmyadmin",
     owner => $webadminuser,
     group => $webadmingroup,
-    notify => Service['apache2'],
+    #notify => Service['apache2'],
   }
 
   file { "/var/www/apc.php":
-    require => Package['php53'],
+    #require => Package['php53'],
     ensure => present,
     source => "puppet:///modules/php53/apc.php",
     owner => $webadminuser,
@@ -44,7 +44,7 @@ class php53::dev ($webadminuser = $php53::webadminuser, $webadmingroup = $php53:
   }
 
   file { "/var/www/memcache.php":
-    require => Package['php53'],
+    #require => Package['php53'],
     ensure => present,
     source => "puppet:///modules/php53/memcache.php",
     owner => $webadminuser,
