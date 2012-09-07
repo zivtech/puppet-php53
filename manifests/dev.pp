@@ -1,5 +1,5 @@
 # Dev class for PHP 5.3 submodule
-class php53::dev ($webadminuser = $php53::webadminuser, $webadmingroup = $php53::webadmingroup) inherits php53 {
+class php53::dev ($webadminuser = $php53::webadminuser, $webadmingroup = $php53::webadmingroup, $web_permissions = $php53::web_permissions) inherits php53 {
 
   package {
     [
@@ -18,37 +18,60 @@ class php53::dev ($webadminuser = $php53::webadminuser, $webadmingroup = $php53:
     group => $webadmingroup,
   }
 
-  file { "/etc/apache2/sites-available/phpmyadmin":
-    require => Package["phpmyadmin"],
-    ensure => link,
-    target => "/etc/phpmyadmin/apache.conf",
-    owner => $webadminuser,
-    group => $webadmingroup,
+  if ($web_permissions == 'true') {
+    file { "/etc/apache2/sites-available/phpmyadmin":
+      require => Package["phpmyadmin"],
+      ensure => link,
+      target => "/etc/phpmyadmin/apache.conf",
+      owner => $webadminuser,
+      group => $webadmingroup,
+    }
+    file { "/etc/apache2/sites-enabled/phpmyadmin":
+      require => File["/etc/apache2/sites-available/phpmyadmin"],
+      ensure => link,
+      target => "/etc/apache2/sites-available/phpmyadmin",
+      owner => $webadminuser,
+      group => $webadmingroup,
+      #notify => Service['apache2'],
+    }
+    file { "/var/www/apc.php":
+      #require => Package['php53'],
+      ensure => present,
+      source => "puppet:///modules/php53/apc.php",
+      owner => $webadminuser,
+      group => $webadmingroup,
+    }
+    file { "/var/www/memcache.php":
+      #require => Package['php53'],
+      ensure => present,
+      source => "puppet:///modules/php53/memcache.php",
+      owner => $webadminuser,
+      group => $webadmingroup,
+    }
   }
+  else {
 
-  file { "/etc/apache2/sites-enabled/phpmyadmin":
-    require => File["/etc/apache2/sites-available/phpmyadmin"],
-    ensure => link,
-    target => "/etc/apache2/sites-available/phpmyadmin",
-    owner => $webadminuser,
-    group => $webadmingroup,
-    #notify => Service['apache2'],
-  }
-
-  file { "/var/www/apc.php":
-    #require => Package['php53'],
-    ensure => present,
-    source => "puppet:///modules/php53/apc.php",
-    owner => $webadminuser,
-    group => $webadmingroup,
-  }
-
-  file { "/var/www/memcache.php":
-    #require => Package['php53'],
-    ensure => present,
-    source => "puppet:///modules/php53/memcache.php",
-    owner => $webadminuser,
-    group => $webadmingroup,
+    file { "/etc/apache2/sites-available/phpmyadmin":
+      require => Package["phpmyadmin"],
+      ensure => link,
+      target => "/etc/phpmyadmin/apache.conf",
+    }
+    file { "/etc/apache2/sites-enabled/phpmyadmin":
+      require => File["/etc/apache2/sites-available/phpmyadmin"],
+      ensure => link,
+      target => "/etc/apache2/sites-available/phpmyadmin",
+      #notify => Service['apache2'],
+    }
+    file { "/var/www/apc.php":
+      #require => Package['php53'],
+      ensure => present,
+      source => "puppet:///modules/php53/apc.php",
+    }
+    file { "/var/www/memcache.php":
+      #require => Package['php53'],
+      ensure => present,
+      source => "puppet:///modules/php53/memcache.php",
+    }
   }
 
   File["/etc/php5/apache2/php.ini"] {

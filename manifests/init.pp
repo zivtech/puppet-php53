@@ -1,5 +1,5 @@
 # Installs PHP 5.3 packages
-class php53( $webadminuser = 'root', $webadmingroup = 'root') {
+class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions = 'true') {
   package { 'php53':
     name => [
       'apache2-mpm-prefork',
@@ -128,24 +128,30 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root') {
     group => root,
   }
 
-  file { "/var/www":
-    ensure => 'directory',
-    owner => $webadminuser,
-    group => $webadmingroup,
+  if ($web_permissions == 'true') {
+    file { "/var/www":
+      ensure => 'directory',
+      owner => $webadminuser,
+      group => $webadmingroup,
+    }
+    file { "/etc/php5/apache2/conf.d/apc.ini":
+      require => Package['php53'],
+      source => "puppet:///modules/php53/apc.ini",
+      owner => root,
+      group => root,
+    }
+  }
+  else {
+    file { "/var/www":
+      ensure => 'directory',
+    }
+    file { "/etc/php5/apache2/conf.d/apc.ini":
+      require => Package['php53'],
+      source => "puppet:///modules/php53/apc.ini",
+    }
   }
 
-  file { "/etc/php5/apache2/conf.d/apc.ini":
-    require => Package['php53'],
-    source => "puppet:///modules/php53/apc.ini",
-    owner => root,
-    group => root,
-  }
 
-  # TODO: This doesn't work because conf.d is a soft link in the apache2 and cli folders
-  file { ["/etc/php5/cli/conf.d/apc.ini", "/etc/php5/conf.d/apc.ini"]:
-    require => Package['php53'],
-    ensure => absent,
-  }
 
   # enable mod_rewrite
   exec { "/usr/sbin/a2enmod rewrite":
