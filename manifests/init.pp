@@ -78,7 +78,7 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions =
 
   file { '/var/log/php/error.log':
     require => File['/var/log/php'],
-    ensure => exists,
+    ensure => present,
     owner  => 'www-data',
     group => $webadminuser,
   }
