@@ -10,7 +10,7 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions =
       'automake',
       'autotools-dev',
       'comerr-dev',
-      'libaprutil1-dev', 
+      'libaprutil1-dev',
       'libtool',
       'libc-client2007e',
       'libldap2-dev',
