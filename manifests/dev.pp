@@ -5,6 +5,7 @@ class php53::dev ($webadminuser = $php53::webadminuser, $webadmingroup = $php53:
     [
       "build-essential",
       "phpmyadmin",
+      "php5-xdebug",
     ]:
       ensure => installed
   }
