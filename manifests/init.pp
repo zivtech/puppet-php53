@@ -28,6 +28,7 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions =
       'memcached',
       'mime-support',
       'mlock',
+      'mysql-client',
       'php5',
       'php5-cli',
       'php-apc',
