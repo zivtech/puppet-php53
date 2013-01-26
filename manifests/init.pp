@@ -1,5 +1,10 @@
 # Installs PHP 5.3 packages
-class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions = 'true') {
+class php53(
+  $webadminuser = 'root',
+  $webadmingroup = 'root',
+  $web_permissions = 'true',
+  $max_post_size = '8M'
+) {
   package { 'php53':
     name => [
       'apache2-mpm-prefork',
@@ -108,7 +113,7 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions =
 
   file { "/etc/php5/apache2/php.ini":
     require => Package['php53'],
-    source => "puppet:///modules/php53/php.ini.apache2",
+    content => template("php53/php.ini.apache2.erb"),
     owner => root,
     group => root,
   }
