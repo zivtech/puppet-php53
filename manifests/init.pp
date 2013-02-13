@@ -9,6 +9,7 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions =
       'autoconf',
       'automake',
       'autotools-dev',
+      'build-essential',
       'comerr-dev',
       'libaprutil1-dev',
       'libtool',
@@ -56,19 +57,22 @@ class php53( $webadminuser = 'root', $webadmingroup = 'root', $web_permissions =
     ensure => running,
     require => Package['php53'],
   }
-/*
+
   exec { 'pecl install uploadprogress':
+    command => "/usr/bin/pecl install uploadprogress",
     require => Package['php53'],
     unless => "/usr/bin/test -f /etc/php5/apache2/conf.d/uploadprogress.ini",
-    path => ["/usr/bin", "/usr/sbin"],
+    path => ["/usr/bin:/usr/sbin:/bin"],
   }
 
   file { '/etc/php5/apache2/conf.d/uploadprogress.ini':
     ensure => present,
     content => 'extension=uploadprogress.so',
     require => Exec['pecl install uploadprogress'],
+    owner   => root,
+    group   => root,
+    mode    => 0644,
   }
-*/
 
   file { '/var/log/php':
     ensure => 'directory',
