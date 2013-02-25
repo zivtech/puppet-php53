@@ -66,7 +66,7 @@ class php53(
   exec { 'pecl install uploadprogress':
     command => "/usr/bin/pecl install uploadprogress",
     require => Package['php53'],
-    unless => "/usr/bin/test -f /etc/php5/apache2/conf.d/uploadprogress.ini",
+    creates => "/etc/php5/apache2/conf.d/uploadprogress.ini",
     path => ["/usr/bin:/usr/sbin:/bin"],
   }
 
