@@ -72,7 +72,7 @@ class php53::dev (
   }
 
   File["/etc/php5/apache2/php.ini"] {
-    source => "puppet:///modules/php53/dev.apache2.php.ini"
+    content => template("php53/dev.php.ini.apache2.erb"),
   }
   file { "/etc/php5/conf.d/xdebug.ini":
     require => Package["php5-xdebug"],
