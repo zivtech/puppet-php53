@@ -1,7 +1,7 @@
 # Installs PHP 5.3 packages
 class php53 (
-    $webadminuser = 'root',
-    $webadmingroup = 'root',
+    $webadminuser = 'webadmin',
+    $webadmingroup = 'webadmin',
     $web_permissions = 'true',
     $max_post_size = '8M'
   ) inherits php53::params {
