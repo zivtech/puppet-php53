@@ -1,6 +1,6 @@
 class php53::params {
   $base_packages = [
-   
+    'memcached',
   ]
   case $::osfamily {
     'RedHat': {
@@ -87,7 +87,6 @@ class php53::params {
         'libmysqlclient-dev',
         'krb5-multidev',
         'm4',
-        'memcached',
         'mime-support',
         'mlock',
         'mysql-client',
