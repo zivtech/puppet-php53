@@ -14,6 +14,7 @@ class php53::params {
         'httpd',
         'httpd-devel',
         'php-pear',
+        'php-cli',
         'php-common',
         'php-devel',
         'php-pecl-apc',
@@ -26,29 +27,7 @@ class php53::params {
         'php-gd',
         'php-pecl-xdebug',
         'php-pecl-memcached',
-        'php-pecl-Fileinfo',
-        'php-pecl-zip',
         'openssl',
-        /*
-        # The following alternate set of packages install php53 but not apc.
-        'httpd',
-        'httpd-devel',
-        'php53-common',
-        'php-pear',
-        'php53-devel',
-        # 'php53-apc',
-        'php53-mysql',
-        'php53-pdo',
-        'php53-pgsql',
-        'php53-soap',
-        'php53-xml',
-        'php53-xmlrpc',
-        'php53-gd',
-        # 'php-pecl-xdebug',
-        # 'php-pecl-memcached',
-        # 'php-pecl-Fileinfo',
-        # 'php-pecl-zip',
-        */
       ]
       $packages = concat($base_packages, $rehl_packages)
     }

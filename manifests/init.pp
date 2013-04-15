@@ -78,15 +78,15 @@ class php53 (
     notify => Service[$php53::params::apache_service],
   }
 
-  
-  file { "${php53::params::php_conf_dir}/memcache.ini":
-    require => Package['php53'],
-    source => "puppet:///modules/php53/memcache.ini",
-    owner => root,
-    group => root,
-    notify => Service[$php53::params::apache_service],
-  }
   if $::osfamily == 'Debian' {
+    # This file is created automatically on RedHat.
+    file { "${php53::params::php_conf_dir}/memcache.ini":
+      require => Package['php53'],
+      source => "puppet:///modules/php53/memcache.ini",
+      owner => root,
+      group => root,
+      notify => Service[$php53::params::apache_service],
+    }
     file { "/etc/php5/cli/php.ini":
       require => Package['php53'],
       source => "puppet:///modules/php53/php.ini.cli",
