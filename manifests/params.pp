@@ -26,7 +26,7 @@ class php53::params {
         'php-xmlrpc',
         'php-gd',
         'php-pecl-xdebug',
-        'php-pecl-memcached',
+        'php-pecl-memcache',
         'openssl',
       ]
       $packages = concat($base_packages, $rehl_packages)
