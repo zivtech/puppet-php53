@@ -41,12 +41,12 @@ class php53::params {
       $php_ini_path = "/etc/php5/apache2/php.ini"
       $php_conf_dir = '/etc/php5/conf.d'
       $apache_docroot = "/var/www"
+      # perhaps `autoconf` should be included?
       $deb_packages = [
         'apache2-mpm-prefork',
         'apache2-prefork-dev',
         'apache2-utils',
         'apache2.2-common',
-            # 'autoconf',
         'automake',
         'autotools-dev',
         'build-essential',
@@ -84,8 +84,11 @@ class php53::params {
         'shtool',
         'ssl-cert',
         'uuid-dev',
+        'memcached',
       ]
-      $packages = concat($base_packages, $deb_packages)
+      # TODO: FIXME
+      # $packages = concat($base_packages, $deb_packages)
+      $packages = $deb_packages
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily RedHat and Debian.")
