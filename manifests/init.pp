@@ -119,7 +119,7 @@ class php53 (
       ensure => 'directory',
     }
   }
-  
+
   /*
   # enable mod_rewrite
   exec { "/usr/sbin/a2enmod rewrite":
