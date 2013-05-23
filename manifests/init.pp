@@ -3,7 +3,8 @@ class php53 (
     $webadminuser = 'webadmin',
     $webadmingroup = 'webadmin',
     $web_permissions = 'true',
-    $max_post_size = '8M'
+    $max_post_size = '8M',
+    $apacheport = '80'
   ) inherits php53::params {
   package { 'php53':
     name => $php53::params::packages,
@@ -14,7 +15,7 @@ class php53 (
     require => Package['php53'],
     enable => true,
   }
-  
+
   service { 'memcached':
     ensure => running,
     require => Package['php53'],
@@ -147,5 +148,15 @@ class php53 (
     command => "find ${php53::params::php_conf_dir}/* -type f -exec sed -i 's/#/;/g' {} \\;",
     path => "/usr/bin:/usr/sbin:/bin",
     onlyif => "grep -qr '#' /etc/php5/apache2/conf.d"
+  }
+
+  if ($::osfamily == 'Redhat') {
+    file { '/etc/httpd/conf/httpd.conf':
+      require => Package['php53'],
+      content => template("php53/httpd.conf.erb"),
+      owner => root,
+      group => root,
+      notify => Service[$php53::params::apache_service],
+    }
   }
 }
