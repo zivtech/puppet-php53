@@ -25,7 +25,6 @@ class php53::params {
         'php-xml',
         'php-xmlrpc',
         'php-gd',
-        'php-pecl-xdebug',
         'php-pecl-memcache',
         'openssl',
       ]
