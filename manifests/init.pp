@@ -4,7 +4,7 @@ class php53 (
     $webadmingroup = 'webadmin',
     $web_permissions = 'true',
     $max_post_size = '8M',
-    $apacheport = '80'
+    $apacheport = '80',
     $apc_shm_size = '256M'
   ) inherits php53::params {
   package { 'php53':
