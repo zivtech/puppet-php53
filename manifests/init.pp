@@ -5,6 +5,7 @@ class php53 (
     $web_permissions = 'true',
     $max_post_size = '8M',
     $apacheport = '80'
+    $apc_shm_size = '256M'
   ) inherits php53::params {
   package { 'php53':
     name => $php53::params::packages,
@@ -103,7 +104,7 @@ class php53 (
   }
   file { "${php53::params::php_conf_dir}/apc.ini":
     require => Package['php53'],
-    source => "puppet:///modules/php53/apc.ini",
+    content => template('php53/apc.ini.erb'),
     owner => root,
     group => root,
   }
