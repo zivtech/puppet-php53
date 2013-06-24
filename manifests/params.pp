@@ -10,6 +10,7 @@ class php53::params {
       $php_ini_path = '/etc/php.ini'
       $php_conf_dir = '/etc/php.d'
       $apache_docroot = "/var/www/html"
+      $apache_vhost_dir = "/etc/httpd/conf.d"
       $rehl_packages = [
         'httpd',
         'httpd-devel',
@@ -40,6 +41,7 @@ class php53::params {
       $php_ini_path = "/etc/php5/apache2/php.ini"
       $php_conf_dir = '/etc/php5/conf.d'
       $apache_docroot = "/var/www"
+      $apache_vhost_dir = "/etc/apache2/sites-available"
       # perhaps `autoconf` should be included?
       $deb_packages = [
         'apache2-mpm-prefork',

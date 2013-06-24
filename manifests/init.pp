@@ -62,6 +62,26 @@ class php53 (
     owner => $webadminuser,
     recurse => true,
   }
+
+  file { '/var/www/default/index.html':
+    ensure => present,
+    content => 'index.html',
+    require => Package['php53'],
+    owner => $php53::params::apache_user,
+    group => $webadmingroup,
+    mode    => 0644,
+  }
+
+  file { "${php53::params::apache_vhost_dir}/default":
+    ensure => present,
+    replace => "no"
+    content => 'default_vhost',
+    require => Package['php53'],
+    owner => $php53::params::apache_user,
+    group => $webadmingroup,
+    mode    => 0644,
+  }
+
 /*
   # TODO: Fixme for CentOS
   # TODO: THis is out of date.
