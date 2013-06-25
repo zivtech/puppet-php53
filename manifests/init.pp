@@ -87,7 +87,18 @@ class php53 (
     require => File["/var/www/default"],
     owner => $webadminuser,
     group => $webadmingroup,
-    mode    => 0644
+    mode    => 0644,
+    notify => Service[$php53::params::apache_service],
+  }
+
+  file { "${php53::params::apache_vhost_dir}/default-ssl":
+    ensure => present,
+    source => "puppet:///modules/php53/default-ssl",
+    require => File["/var/www/default"],
+    owner => $webadminuser,
+    group => $webadmingroup,
+    mode    => 0644,
+    notify => Service[$php53::params::apache_service],
   }
 
 /*
