@@ -63,7 +63,7 @@ class php53 (
     recurse => true,
   }
 
-  file { "${php53::params::apache_vhost_dir}/default":
+  file { "/var/www/default":
     require => Package['php53'],
     ensure => 'directory',
     owner => $php53::params::apache_user,
@@ -73,9 +73,9 @@ class php53 (
 
   file { '/var/www/default/index.html':
     ensure => present,
-    replace => "no"
-    content => 'index.html',
-    require => File["${php53::params::apache_vhost_dir}/default"],
+    replace => "no",
+    source => "puppet:///modules/php53/index.html",
+    require => File["/var/www/default"],
     owner => $php53::params::apache_user,
     group => $webadmingroup,
     mode    => 0644,
@@ -83,12 +83,11 @@ class php53 (
 
   file { "${php53::params::apache_vhost_dir}/default":
     ensure => present,
-    replace => "no"
-    content => 'default_vhost',
-    require => File["${php53::params::apache_vhost_dir}/default"],
-    owner => $php53::params::apache_user,
+    content => template('php53/default_vhost'),
+    require => File["/var/www/default"],
+    owner => $webadminuser,
     group => $webadmingroup,
-    mode    => 0644,
+    mode    => 0644
   }
 
 /*
