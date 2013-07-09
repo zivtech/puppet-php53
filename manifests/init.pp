@@ -66,7 +66,7 @@ class php53 (
   file { "/var/www/default":
     require => Package['php53'],
     ensure => 'directory',
-    owner => $php53::params::apache_user,
+    owner => $webadminuser,
     group => $webadmingroup,
     mode    => 0644,
   }
@@ -76,7 +76,7 @@ class php53 (
     replace => "no",
     source => "puppet:///modules/php53/index.html",
     require => File["/var/www/default"],
-    owner => $php53::params::apache_user,
+    owner => $webadminuser,
     group => $webadmingroup,
     mode    => 0644,
   }
