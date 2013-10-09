@@ -102,16 +102,6 @@ class php53 (
     notify => Service[$php53::params::apache_service],
   }
 
-/*
-  # TODO: Fixme for CentOS
-  # TODO: THis is out of date.
-  file { "/etc/apache2/envvars":
-    require => Package['php53'],
-    source => "puppet:///modules/php53/envvars",
-  }
-*/
-
-
   file { $php53::params::php_ini_path:
     require => Package['php53'],
     content => template("php53/php.ini.apache2.erb"),
