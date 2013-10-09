@@ -5,7 +5,8 @@ class php53 (
     $web_permissions = 'true',
     $max_post_size = '8M',
     $apacheport = '80',
-    $apc_shm_size = '256M'
+    $apc_shm_size = '256M',
+    $php_memory_limit = '128M'
   ) inherits php53::params {
   package { 'php53':
     name => $php53::params::packages,
