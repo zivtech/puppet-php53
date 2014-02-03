@@ -3,11 +3,13 @@ class php53 (
     $webadminuser = 'webadmin',
     $webadmingroup = 'webadmin',
     $web_permissions = 'true',
+    $upload_max_filesize = '200M',
     $max_post_size = '8M',
     $apacheport = '80',
     $apc_shm_size = '256M',
     $php_memory_limit = '128M',
-    $setup_default_host = 'true'
+    $setup_default_host = 'true',
+    $max_execution_time = 30
   ) inherits php53::params {
   package { 'php53':
     name => $php53::params::packages,
