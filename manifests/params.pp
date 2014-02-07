@@ -11,6 +11,7 @@ class php53::params {
       $php_conf_dir = '/etc/php.d'
       $apache_docroot = "/var/www/html"
       $apache_vhost_dir = "/etc/httpd/conf.d"
+      $apc_package = 'php-pecl-apc'
       $rehl_packages = [
         'httpd',
         'httpd-devel',
@@ -18,7 +19,6 @@ class php53::params {
         'php-cli',
         'php-common',
         'php-devel',
-        'php-pecl-apc',
         'php-mysql',
         'php-pdo',
         'php-pgsql',
@@ -42,6 +42,7 @@ class php53::params {
       $php_conf_dir = '/etc/php5/conf.d'
       $apache_docroot = "/var/www"
       $apache_vhost_dir = "/etc/apache2/sites-available"
+      $apc_package = 'php-apc'
       # perhaps `autoconf` should be included?
       $deb_packages = [
         'apache2-mpm-prefork',
@@ -72,7 +73,6 @@ class php53::params {
         'mysql-client',
         'php5',
         'php5-cli',
-        'php-apc',
         'php-pear',
         'php5-common',
         'php5-dev',

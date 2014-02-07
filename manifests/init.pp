@@ -11,10 +11,16 @@ class php53 (
     $setup_default_host = 'true',
     $max_execution_time = 30
   ) inherits php53::params {
+
   package { 'php53':
     name => $php53::params::packages,
     ensure => installed
-  }
+  }~>
+
+  package { $php53::params::apc_package:
+    ensure => installed,
+  }~>
+
   service { $php53::params::apache_service:
     ensure => running,
     require => Package['php53'],
