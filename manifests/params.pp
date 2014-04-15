@@ -13,6 +13,7 @@ class php53::params {
       $apache_vhost_dir = "/etc/httpd/conf.d"
       $apc_package = 'php-pecl-apc'
       $xdebug_package = 'php-pecl-xdebug'
+      $xdebug_zend_extension_path = '/usr/lib64/php/modules/xdebug.so'
       $rehl_packages = [
         'httpd',
         'httpd-devel',
@@ -40,6 +41,7 @@ class php53::params {
         '/etc/apache2/sites-enabled',
       ]
       $xdebug_package = 'php5-xdebug'
+      $xdebug_zend_extension_path = '/usr/lib/php5/20090626+lfs/xdebug.so'
       $php_ini_path = "/etc/php5/apache2/php.ini"
       $php_conf_dir = '/etc/php5/conf.d'
       $apache_docroot = "/var/www"

@@ -8,6 +8,8 @@ class php53::dev (
     $install_phpmyadmin = false
   ) inherits php53 {
 
+  $xdebug_zend_extension_path = $php53::params::xdebug_zend_extension_path
+
   package { $php53::params::xdebug_package:
     ensure => installed
   }
