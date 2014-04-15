@@ -1,4 +1,4 @@
-# Installs PHP 5.3 packages
+# Installs PHP 5.3 packages.
 class php53 (
     $webadminuser = 'webadmin',
     $webadmingroup = 'webadmin',
