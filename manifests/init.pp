@@ -3,14 +3,24 @@ class php53 (
     $webadminuser = 'webadmin',
     $webadmingroup = 'webadmin',
     $web_permissions = 'true',
+    $upload_max_filesize = '200M',
     $max_post_size = '8M',
     $apacheport = '80',
-    $apc_shm_size = '256M'
+    $apc_shm_size = '256M',
+    $php_memory_limit = '128M',
+    $setup_default_host = 'true',
+    $max_execution_time = 30
   ) inherits php53::params {
+
   package { 'php53':
     name => $php53::params::packages,
     ensure => installed
-  }
+  }~>
+
+  package { $php53::params::apc_package:
+    ensure => installed,
+  }~>
+
   service { $php53::params::apache_service:
     ensure => running,
     require => Package['php53'],
@@ -63,53 +73,45 @@ class php53 (
     recurse => true,
   }
 
-  file { "/var/www/default":
-    require => Package['php53'],
-    ensure => 'directory',
-    owner => $webadminuser,
-    group => $webadmingroup,
-    mode    => 0644,
-  }
+  if ($setup_default_host == 'true') {
+    file { "/var/www/default":
+      require => Package['php53'],
+      ensure => 'directory',
+      owner => $webadminuser,
+      group => $webadmingroup,
+      mode    => 0644,
+    }
 
-  file { '/var/www/default/index.html':
-    ensure => present,
-    replace => "no",
-    source => "puppet:///modules/php53/index.html",
-    require => File["/var/www/default"],
-    owner => $webadminuser,
-    group => $webadmingroup,
-    mode    => 0644,
-  }
+    file { '/var/www/default/index.html':
+      ensure => present,
+      replace => "no",
+      source => "puppet:///modules/php53/index.html",
+      require => File["/var/www/default"],
+      owner => $webadminuser,
+      group => $webadmingroup,
+      mode    => 0644,
+    }
 
-  file { "${php53::params::apache_vhost_dir}/default":
-    ensure => present,
-    content => template('php53/default_vhost'),
-    require => File["/var/www/default"],
-    owner => $webadminuser,
-    group => $webadmingroup,
-    mode    => 0644,
-    notify => Service[$php53::params::apache_service],
-  }
+    file { "${php53::params::apache_vhost_dir}/default":
+      ensure => present,
+      content => template('php53/default_vhost'),
+      require => File["/var/www/default"],
+      owner => $webadminuser,
+      group => $webadmingroup,
+      mode    => 0644,
+      notify => Service[$php53::params::apache_service],
+    }
 
-  file { "${php53::params::apache_vhost_dir}/default-ssl":
-    ensure => present,
-    source => "puppet:///modules/php53/default-ssl",
-    require => File["/var/www/default"],
-    owner => $webadminuser,
-    group => $webadmingroup,
-    mode    => 0644,
-    notify => Service[$php53::params::apache_service],
+    file { "${php53::params::apache_vhost_dir}/default-ssl":
+      ensure => present,
+      source => "puppet:///modules/php53/default-ssl",
+      require => File["/var/www/default"],
+      owner => $webadminuser,
+      group => $webadmingroup,
+      mode    => 0644,
+      notify => Service[$php53::params::apache_service],
+    }
   }
-
-/*
-  # TODO: Fixme for CentOS
-  # TODO: THis is out of date.
-  file { "/etc/apache2/envvars":
-    require => Package['php53'],
-    source => "puppet:///modules/php53/envvars",
-  }
-*/
-
 
   file { $php53::params::php_ini_path:
     require => Package['php53'],
