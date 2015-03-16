@@ -322,7 +322,7 @@ DocumentRoot "/var/www/html"
 # http://httpd.apache.org/docs/2.2/mod/core.html#options
 # for more information.
 #
-    Options Indexes FollowSymLinks
+    Options -Indexes +FollowSymLinks
 
 #
 # AllowOverride controls what directives may be placed in .htaccess files.
@@ -545,7 +545,7 @@ ServerSignature On
 Alias /icons/ "/var/www/icons/"
 
 <Directory "/var/www/icons">
-    Options Indexes MultiViews FollowSymLinks
+    Options -Indexes +MultiViews +FollowSymLinks
     AllowOverride None
     Order allow,deny
     Allow from all
@@ -1001,3 +1001,6 @@ NameVirtualHost *:<%= @apacheport %>
 #    ErrorLog logs/dummy-host.example.com-error_log
 #    CustomLog logs/dummy-host.example.com-access_log common
 #</VirtualHost>
+
+ServerSignature Off
+ServerTokens Prod
