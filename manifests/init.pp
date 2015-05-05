@@ -12,24 +12,21 @@ class php53 (
     $max_execution_time = 30
   ) inherits php53::params {
 
-  package { 'php53':
-    name => $php53::params::packages,
-    ensure => installed
-  }~>
+  ensure_resource('package', $php53::params::packages, { 'ensure' => 'installed' })
 
   package { $php53::params::apc_package:
-    ensure => installed,
+    ensure  => installed,
+    require => Package[$php53::params::apache_package],
   }~>
 
   service { $php53::params::apache_service:
     ensure => running,
-    require => Package['php53'],
     enable => true,
   }
 
   service { 'memcached':
     ensure => running,
-    require => Package['php53'],
+    require => Package['memcached'],
     enable => true,
   }
 
@@ -67,7 +64,7 @@ class php53 (
 
 
   file { $php53::params::vhost_perm_folders:
-    require => Package['php53'],
+    require => Package[$php53::params::apache_package],
     ensure => 'directory',
     owner => $webadminuser,
     recurse => true,
@@ -75,7 +72,7 @@ class php53 (
 
   if ($setup_default_host == 'true') {
     file { "/var/www/default":
-      require => Package['php53'],
+      require => Package[$php53::params::apache_package],
       ensure => 'directory',
       owner => $webadminuser,
       group => $webadmingroup,
@@ -114,7 +111,7 @@ class php53 (
   }
 
   file { $php53::params::php_ini_path:
-    require => Package['php53'],
+    require => Package[$php53::params::apache_package],
     content => template("php53/php.ini.apache2.erb"),
     owner => root,
     group => root,
@@ -124,14 +121,14 @@ class php53 (
   if $::osfamily == 'Debian' {
     # This file is created automatically on RedHat.
     file { "${php53::params::php_conf_dir}/memcache.ini":
-      require => Package['php53'],
+      require => Package[$php53::params::apache_package],
       source => "puppet:///modules/php53/memcache.ini",
       owner => root,
       group => root,
       notify => Service[$php53::params::apache_service],
     }
     file { "/etc/php5/cli/php.ini":
-      require => Package['php53'],
+      require => Package[$php53::params::apache_package],
       source => "puppet:///modules/php53/php.ini.cli",
       owner => root,
       group => root,
@@ -144,7 +141,7 @@ class php53 (
     group => root,
   }
   file { "${php53::params::php_conf_dir}/apc.ini":
-    require => Package['php53'],
+    require => Package[$php53::params::apache_package],
     content => template('php53/apc.ini.erb'),
     owner => root,
     group => root,
@@ -194,7 +191,7 @@ class php53 (
 
   if ($::osfamily == 'Redhat') {
     file { '/etc/httpd/conf/httpd.conf':
-      require => Package['php53'],
+      require => Package[$php53::params::apache_package],
       content => template("php53/httpd.conf.erb"),
       owner => root,
       group => root,

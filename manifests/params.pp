@@ -1,10 +1,8 @@
 class php53::params {
-  $base_packages = [
-    'memcached',
-  ]
   case $::osfamily {
     'RedHat': {
       $apache_service = 'httpd'
+      $apache_package = 'httpd'
       $apache_user = 'apache'
       $vhost_perm_folders = ['/etc/httpd/conf.d']
       $php_ini_path = '/etc/php.ini'
@@ -14,7 +12,7 @@ class php53::params {
       $apc_package = 'php-pecl-apc'
       $xdebug_package = 'php-pecl-xdebug'
       $xdebug_zend_extension_path = '/usr/lib64/php/modules/xdebug.so'
-      $rehl_packages = [
+      $packages = [
         'httpd',
         'httpd-devel',
         'php-pear',
@@ -30,11 +28,12 @@ class php53::params {
         'php-gd',
         'php-pecl-memcache',
         'openssl',
+        'memcached',
       ]
-      $packages = concat($base_packages, $rehl_packages)
     }
     'Debian': {
       $apache_service = 'apache2'
+      $apache_package = 'apache2-mpm-prefork'
       $apache_user = 'www-data'
       $vhost_perm_folders = [
         "/etc/apache2/sites-available",
@@ -48,7 +47,7 @@ class php53::params {
       $apache_vhost_dir = "/etc/apache2/sites-available"
       $apc_package = 'php-apc'
       # perhaps `autoconf` should be included?
-      $deb_packages = [
+      $packages = [
         'apache2-mpm-prefork',
         'apache2-prefork-dev',
         'apache2-utils',
@@ -89,11 +88,7 @@ class php53::params {
         'shtool',
         'ssl-cert',
         'uuid-dev',
-        'memcached',
       ]
-      # TODO: FIXME
-      # $packages = concat($base_packages, $deb_packages)
-      $packages = $deb_packages
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily RedHat and Debian.")
